@@ -14,6 +14,7 @@
  */
 
 export const DEFAULT_CONFIG = {
+  pageTitle: 'hello ely',
   story: [
     { art: '💌', text: 'Khoan đã… đừng bấm vội. Đọc cái này trước đã nha 🙈' },
     { art: '⚔️', text: 'Đã lâu rồi chưa thấy em on ARAM, toàn mải mê Naraka thôi.' },

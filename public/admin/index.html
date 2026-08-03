@@ -204,6 +204,12 @@
   <div class="page on" id="page-content">
 
     <div class="panel">
+      <h2><span class="num">0</span> Tên hiện trên tab trình duyệt</h2>
+      <input type="text" id="pageTitle" placeholder="hello ely">
+      <p class="hint">Đây là dòng chữ hiện ở tab trình duyệt và khi gửi link. Để trung tính thôi, đừng ghi lộ nội dung bên trong.</p>
+    </div>
+
+    <div class="panel">
       <h2><span class="num">1</span> Lời dẫn (bấm "Tiếp tục đọc" từng màn)</h2>
       <div id="steps"></div>
       <button class="ghost small" id="addStep">+ Thêm một màn</button>
@@ -314,6 +320,7 @@
   let CFG = null;
 
   const TEXT_FIELDS = [
+    'pageTitle',
     'nextLabel', 'lastLabel', 'askArt', 'headline', 'askSub', 'time',
     'yesLabel', 'noLabel', 'firstTaunt', 'okTitle', 'okSub', 'place', 'note',
     'msgLabel', 'msgPlaceholder', 'sendLabel', 'sentText'
