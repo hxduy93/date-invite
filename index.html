@@ -137,9 +137,9 @@
     background: linear-gradient(96deg, #b9a7d6, #9b8bc4);
     box-shadow: 0 8px 22px rgba(139, 92, 246, .28);
   }
-  /* Khi đã "sổng chuồng": bay tự do trong màn hình, KHÔNG bao giờ ẩn đi */
+  /* Khi đã "sổng chuồng": nhảy loạn NHƯNG chỉ trong khung thẻ, không bao giờ ẩn đi */
   #no.loose {
-    position: fixed; z-index: 80; margin: 0; opacity: 1 !important; visibility: visible !important;
+    position: absolute; z-index: 80; margin: 0; opacity: 1 !important; visibility: visible !important;
     transition: left .26s cubic-bezier(.34,1.5,.5,1), top .26s cubic-bezier(.34,1.5,.5,1), transform .22s ease;
   }
 
@@ -240,6 +240,30 @@
 
   canvas#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
 
+  /* ---------- nút nhạc nền ---------- */
+  #music {
+    position: fixed; top: 16px; right: 16px; z-index: 95;
+    width: 46px; height: 46px; padding: 0; border-radius: 50%;
+    display: grid; place-items: center; font-size: 20px;
+    background: rgba(255, 255, 255, .85);
+    border: 2px solid var(--pink-2);
+    box-shadow: 0 6px 18px rgba(190, 60, 130, .16);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  #music:hover { transform: scale(1.08); }
+  #music.off { opacity: .55; filter: grayscale(1); }
+  #music .bars { display: flex; gap: 2.5px; align-items: flex-end; height: 16px; }
+  #music .bars i {
+    width: 3px; border-radius: 2px; background: var(--pink-4);
+    animation: eq .9s ease-in-out infinite;
+  }
+  #music .bars i:nth-child(1) { height: 7px;  animation-delay: 0s; }
+  #music .bars i:nth-child(2) { height: 15px; animation-delay: .18s; }
+  #music .bars i:nth-child(3) { height: 10px; animation-delay: .36s; }
+  #music .bars i:nth-child(4) { height: 13px; animation-delay: .54s; }
+  @keyframes eq { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+  #music.off .bars i { animation-play-state: paused; transform: scaleY(.35); }
+
   @media (max-width: 420px) {
     .card { padding: 30px 20px 28px; border-radius: 24px; }
     button { font-size: 17px; padding: 14px 26px; }
@@ -252,6 +276,10 @@
 
 <div class="bg-hearts" id="bgHearts"></div>
 <canvas id="confetti"></canvas>
+
+<button id="music" class="off" title="Bật / tắt nhạc nền" aria-label="Bật hoặc tắt nhạc nền">
+  <span class="bars"><i></i><i></i><i></i><i></i></span>
+</button>
 
 <main class="card">
 
@@ -324,7 +352,7 @@
   /* ---------- LỜI DẪN: thêm / bớt / sửa thoải mái ---------- */
   const STORY = [
     { art: '💌', text: 'Khoan đã… đừng bấm vội. Đọc cái này trước đã nha 🙈' },
-    { art: '🌙', text: 'Hôm nay em lại bận cả ngày rồi đúng không? Anh thấy em online mà cứ chạy đi đâu ấy.' },
+    { art: '⚔️', text: 'Đã lâu rồi chưa thấy em on ARAM, toàn mải mê Naraka thôi.' },
     { art: '🎧', text: 'Anh có chuẩn bị một thứ nho nhỏ. Không tốn tiền đâu… chỉ tốn thời gian của em thôi 👉👈' },
     { art: '🥺', text: 'Bấm tiếp là biết liền. Mà báo trước, đọc rồi thì không quay đầu được đâu đó.' }
   ];
@@ -333,7 +361,8 @@
   const CAT_LINES = [
     'Đừng mà 🥺',
     'Hứa sẽ không feed 🥺',
-    'Hứa sẽ ko bật em 🥺'
+    'Hứa sẽ ko bật em 🥺',
+    'Hứa sẽ ngoan 🥺'
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -395,6 +424,7 @@
   renderStep();
 
   $('next').addEventListener('click', () => {
+    MUSIC.start();                       // cú bấm đầu tiên mở nhạc nền
     if (step < STORY.length - 1) { step++; renderStep(); }
     else show('ask');
   });
@@ -402,6 +432,7 @@
   /* =========================================================
      MÀN 2 — NÚT "KHÔNG ĐỒNG Ý" CHẠY LOẠN (không bao giờ biến mất)
      ========================================================= */
+  const card = document.querySelector('.card');
   const noBtn = $('no'), yesBtn = $('yes'), taunt = $('taunt');
   const catBox = $('catBox'), catWrap = $('catWrap'), catSay = $('catSay');
 
@@ -412,21 +443,22 @@
   function dodge() {
     dodges++;
 
-    // Lần đầu: tách nút khỏi luồng bố cục để bay tự do (vẫn hiển thị nguyên vẹn).
+    // Lần đầu: tách nút khỏi luồng bố cục để nhảy tự do (vẫn hiển thị nguyên vẹn).
     if (!noBtn.classList.contains('loose')) {
-      const r = noBtn.getBoundingClientRect();
-      noBtn.style.width = r.width + 'px';
-      noBtn.style.height = r.height + 'px';
-      noBtn.style.left = r.left + 'px';
-      noBtn.style.top = r.top + 'px';
+      const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
+      const x = noBtn.offsetLeft, y = noBtn.offsetTop;   // toạ độ so với khung thẻ
+      noBtn.style.width = w + 'px';
+      noBtn.style.height = h + 'px';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
       noBtn.classList.add('loose');
       void noBtn.offsetWidth;
     }
 
     jumpTo(pickSpot());
 
-    // Nút "Đồng ý" to dần cho dễ bấm 😏
-    yesBtn.style.transform = 'scale(' + Math.min(1 + dodges * 0.08, 1.55) + ')';
+    // Nút "Đồng ý" phóng to dần cho dễ bấm 😏
+    yesBtn.style.transform = 'scale(' + Math.min(1 + dodges * 0.13, 1.85) + ')';
 
     if (dodges === 1) {
       taunt.textContent = FIRST_TAUNT;
@@ -446,32 +478,38 @@
     }
   }
 
-  /* Chọn vị trí mới: luôn nằm trọn trong màn hình, không đè nút "Đồng ý" và không che mèo. */
+  /* Chọn vị trí mới: luôn nằm TRỌN TRONG KHUNG THẺ, không đè nút "Đồng ý", không che mèo. */
   function pickSpot() {
-    const pad = 8;
+    const pad = 10;
     const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
-    const maxX = Math.max(pad, window.innerWidth  - w - pad);
-    const maxY = Math.max(pad, window.innerHeight - h - pad);
+    const maxX = Math.max(pad, card.clientWidth  - w - pad);
+    const maxY = Math.max(pad, card.clientHeight - h - pad);
 
-    const blocked = [rectOf(yesBtn, 22)];
-    if (catBox.classList.contains('on')) blocked.push(rectOf(catBox, 14));
+    const blocked = [rectOf(yesBtn, 20)];
+    if (catBox.classList.contains('on')) blocked.push(rectOf(catBox, 12));
+
+    const yb = rectOf(yesBtn, 0);
+    const ycx = (yb.l + yb.r) / 2, ycy = (yb.t + yb.b) / 2;
 
     let best = null, bestScore = -1;
     for (let i = 0; i < 40; i++) {
       const x = rand(pad, maxX), y = rand(pad, maxY);
       const hits = blocked.some(b => x < b.r && x + w > b.l && y < b.b && y + h > b.t);
       if (!hits) return { x, y };
-      // dự phòng: nếu màn hình quá chật, giữ ô nào xa nút "Đồng ý" nhất
-      const yb = rectOf(yesBtn, 0);
-      const d = Math.hypot(x - (yb.l + yb.r) / 2, y - (yb.t + yb.b) / 2);
+      // dự phòng: nếu thẻ quá chật, giữ ô nào xa nút "Đồng ý" nhất
+      const d = Math.hypot(x - ycx, y - ycy);
       if (d > bestScore) { bestScore = d; best = { x, y }; }
     }
     return best;
   }
 
+  /* Toạ độ của một phần tử quy về gốc là khung thẻ */
   function rectOf(el, pad) {
-    const r = el.getBoundingClientRect();
-    return { l: r.left - pad, t: r.top - pad, r: r.right + pad, b: r.bottom + pad };
+    const r = el.getBoundingClientRect(), c = card.getBoundingClientRect();
+    return {
+      l: r.left  - c.left - pad, t: r.top    - c.top - pad,
+      r: r.right - c.left + pad, b: r.bottom - c.top + pad
+    };
   }
 
   function jumpTo(p) {
@@ -489,15 +527,16 @@
   // Chốt chặn cuối: click có lọt qua thì vẫn không tính là "không đồng ý".
   noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
 
-  // Đổi kích thước cửa sổ -> kéo nút về lại trong màn hình.
-  window.addEventListener('resize', () => {
+  // Đổi kích thước cửa sổ -> kéo nút về lại trong khung thẻ.
+  window.addEventListener('resize', clampInsideCard);
+  function clampInsideCard() {
     if (!noBtn.classList.contains('loose')) return;
-    const pad = 8;
-    const maxX = Math.max(pad, window.innerWidth  - noBtn.offsetWidth  - pad);
-    const maxY = Math.max(pad, window.innerHeight - noBtn.offsetHeight - pad);
+    const pad = 10;
+    const maxX = Math.max(pad, card.clientWidth  - noBtn.offsetWidth  - pad);
+    const maxY = Math.max(pad, card.clientHeight - noBtn.offsetHeight - pad);
     noBtn.style.left = Math.min(Math.max(parseFloat(noBtn.style.left) || pad, pad), maxX) + 'px';
     noBtn.style.top  = Math.min(Math.max(parseFloat(noBtn.style.top)  || pad, pad), maxY) + 'px';
-  });
+  }
 
   /* =========================================================
      NÚT "ĐỒNG Ý"
@@ -519,6 +558,105 @@
     renderStep();
     show('intro');
   });
+
+  /* =========================================================
+     NHẠC NỀN
+     Nếu có file assets/bgm.mp3 thì phát file đó.
+     Không có thì tự chơi một vòng lofi nhẹ bằng Web Audio.
+     (Trình duyệt cấm tự phát nhạc, nên chỉ bật sau cú bấm đầu tiên.)
+     ========================================================= */
+  const MUSIC = (() => {
+    const btn = $('music');
+    let started = false, on = false, mode = null;
+    let el = null;                                   // <audio> khi dùng file
+    let ctx = null, master = null, out = null, timer = null, stepIdx = 0, nextTime = 0;
+
+    const VOL = 0.30;
+    const paint = () => btn.classList.toggle('off', !on);
+
+    /* ---- vòng hợp âm: Cmaj7 – Gmaj7 – Am7 – Fmaj7 ---- */
+    const PROG = [
+      [60, 64, 67, 71],
+      [55, 59, 62, 66],
+      [57, 60, 64, 67],
+      [53, 57, 60, 64]
+    ];
+    const ARP = [0, 2, 3, null, 1, 2, null, 3];      // null = nghỉ
+    const BPM = 68;
+    const BEAT = 60 / BPM, EIGHTH = BEAT / 2;
+
+    const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
+
+    function tone(freq, t, dur, gain, type, attack) {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(gain, t + attack);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(out);
+      o.start(t); o.stop(t + dur + 0.05);
+    }
+
+    function scheduleStep(i, t) {
+      const chord = PROG[Math.floor(i / 8) % PROG.length];
+      if (i % 8 === 0) {                              // đầu ô nhịp: đệm + bass
+        chord.forEach(n => tone(hz(n - 12), t, BEAT * 4.2, 0.055, 'triangle', 0.7));
+        tone(hz(chord[0] - 24), t, BEAT * 2.2, 0.10, 'sine', 0.05);
+      }
+      const a = ARP[i % 8];
+      if (a !== null) tone(hz(chord[a] + 12), t, 0.9, 0.075, 'sine', 0.015);
+    }
+
+    function startSynth() {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      ctx = new AC();
+      mode = 'synth';
+
+      master = ctx.createGain(); master.gain.value = 0.0001;
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2400;
+      const dly = ctx.createDelay(1); dly.delayTime.value = 0.34;
+      const fb = ctx.createGain(); fb.gain.value = 0.26;
+      const wet = ctx.createGain(); wet.gain.value = 0.2;
+
+      lp.connect(master);
+      lp.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(wet); wet.connect(master);
+      master.connect(ctx.destination);
+      out = lp;
+
+      master.gain.exponentialRampToValueAtTime(VOL, ctx.currentTime + 1.6);
+      nextTime = ctx.currentTime + 0.12;
+      timer = setInterval(() => {
+        while (nextTime < ctx.currentTime + 0.35) {
+          scheduleStep(stepIdx++, nextTime);
+          nextTime += EIGHTH;
+        }
+      }, 50);
+    }
+
+    function start() {
+      if (started) return;
+      started = true; on = true; paint();
+
+      el = new Audio('assets/bgm.mp3');
+      el.loop = true; el.volume = 0.42;
+      el.play().then(() => { mode = 'file'; })
+               .catch(() => { el = null; startSynth(); });
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!started) { start(); return; }
+      on = !on; paint();
+      if (mode === 'file' && el) { on ? el.play().catch(() => {}) : el.pause(); }
+      else if (ctx) {
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setTargetAtTime(on ? VOL : 0.0001, ctx.currentTime, 0.18);
+      }
+    });
+
+    return { start };
+  })();
 
   /* =========================================================
      PHÁO GIẤY
