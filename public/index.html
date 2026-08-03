@@ -65,11 +65,13 @@
 
   h1 {
     font-family: 'Baloo 2', cursive;
-    font-size: clamp(25px, 6.2vw, 36px);
+    font-size: 36px;
     font-weight: 800; line-height: 1.25; margin: 16px 0 10px;
     background: linear-gradient(92deg, var(--pink-4), var(--purple));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  /* Tiêu đề luôn gói gọn một dòng — cỡ chữ tự co lại cho vừa khung */
+  h1.fit { white-space: nowrap; overflow: hidden; }
 
   .sub { font-size: clamp(15px, 4vw, 17px); font-weight: 600; opacity: .75; line-height: 1.6; }
 
@@ -100,6 +102,7 @@
     font-family: 'Baloo 2', cursive; font-size: 19px; font-weight: 700;
     padding: 15px 34px; border: none; border-radius: 999px;
     cursor: pointer; color: #fff;
+    white-space: nowrap;              /* chữ trên nút luôn nằm gọn một dòng */
     transition: transform .18s cubic-bezier(.2,.9,.3,1.4), box-shadow .18s ease;
     -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
   }
@@ -312,7 +315,7 @@
   <!-- ===== MÀN 2: LỰA CHỌN ===== -->
   <section id="ask" class="screen">
     <span class="art" id="askArt" style="font-size:54px">🎮</span>
-    <h1 id="headline">Tối nay chơi game với anh nha?</h1>
+    <h1 class="fit" id="headline">Tối nay chơi game với anh nha?</h1>
     <p class="sub" id="askSub">Anh giữ sẵn chỗ trong phòng rồi, chỉ còn thiếu mỗi em thôi 🥺</p>
 
     <div class="time-chip">⏰ <span id="timeText">22h30 tối nay</span></div>
@@ -337,7 +340,7 @@
   <!-- ===== MÀN 3: ĐỒNG Ý ===== -->
   <section id="success" class="screen">
     <div class="girl-wrap"><img src="/assets/girl.gif" alt="vui quá"></div>
-    <h1 id="okTitle">Yeahhh! Chốt kèo nha 💗</h1>
+    <h1 class="fit" id="okTitle">Yeahhh! Chốt kèo nha 💗</h1>
     <p class="sub" id="okSub">Biết ngay là em sẽ đồng ý mà, nút kia có chạy đằng trời 😌</p>
 
     <div class="detail-box">
@@ -433,6 +436,7 @@
 
     buildDots();
     renderStep();
+    fitTitles();
   }
 
   /* ---------- trái tim bay nền ---------- */
@@ -452,9 +456,28 @@
 
   ['/assets/cat.jpg', '/assets/girl.gif'].forEach(src => { new Image().src = src; });
 
+  /* ---------------------------------------------------------
+     Ép tiêu đề nằm gọn MỘT DÒNG: hạ dần cỡ chữ tới khi hết tràn.
+     Chỉ chạy khi phần tử đang hiện, vì lúc ẩn thì bề rộng bằng 0.
+     --------------------------------------------------------- */
+  const MAX_TITLE = 36, MIN_TITLE = 15;
+
+  function fitOneLine(el) {
+    if (!el || el.offsetParent === null) return;
+    let size = MAX_TITLE;
+    el.style.fontSize = size + 'px';
+    while (el.scrollWidth > el.clientWidth && size > MIN_TITLE) {
+      size -= 1;
+      el.style.fontSize = size + 'px';
+    }
+  }
+
+  const fitTitles = () => document.querySelectorAll('h1.fit').forEach(fitOneLine);
+
   const show = (id) => {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
     $(id).classList.add('on');
+    fitTitles();
   };
 
   /* =========================================================
@@ -567,6 +590,7 @@
   noBtn.addEventListener('click',       (e) => { e.preventDefault(); dodge(); });
 
   window.addEventListener('resize', () => {
+    fitTitles();
     if (!noBtn.classList.contains('loose')) return;
     const pad = 10;
     const maxX = Math.max(pad, card.clientWidth  - noBtn.offsetWidth  - pad);
@@ -786,6 +810,9 @@
     .then(r => r.ok ? r.json() : null)
     .then(cfg => { if (cfg && !cfg.error) { CFG = { ...DEFAULTS, ...cfg }; applyConfig(); } })
     .catch(() => {});
+
+  // font tải xong thì bề rộng chữ đổi -> đo lại cho chuẩn
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTitles);
 })();
 </script>
 </body>
