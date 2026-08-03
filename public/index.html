@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Chơi game với anh nhé?</title>
-<link rel="icon" href="assets/cat.jpg">
+<link rel="icon" href="/assets/cat.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
@@ -27,11 +27,9 @@
     color: var(--ink);
     background: linear-gradient(160deg, #fff5fa 0%, #ffe3ef 45%, #f3e5ff 100%);
     min-height: 100dvh;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     padding: 24px 18px;
-    overflow-x: hidden;
-    position: relative;
+    overflow-x: hidden; position: relative;
   }
 
   /* ---------- trái tim bay nền ---------- */
@@ -68,8 +66,7 @@
   h1 {
     font-family: 'Baloo 2', cursive;
     font-size: clamp(25px, 6.2vw, 36px);
-    font-weight: 800; line-height: 1.25;
-    margin: 16px 0 10px;
+    font-weight: 800; line-height: 1.25; margin: 16px 0 10px;
     background: linear-gradient(92deg, var(--pink-4), var(--purple));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
@@ -77,15 +74,14 @@
   .sub { font-size: clamp(15px, 4vw, 17px); font-weight: 600; opacity: .75; line-height: 1.6; }
 
   /* ================= MÀN LỜI DẪN ================= */
-  #intro .art { font-size: 58px; line-height: 1; display: block; animation: wiggle 2.6s ease-in-out infinite; }
+  .art { font-size: 56px; line-height: 1; display: block; animation: wiggle 2.6s ease-in-out infinite; }
   @keyframes wiggle {
     0%, 100% { transform: rotate(-8deg) scale(1); }
     50%      { transform: rotate(8deg) scale(1.08); }
   }
 
   .story {
-    font-size: clamp(17px, 4.6vw, 20px);
-    font-weight: 600; line-height: 1.7;
+    font-size: clamp(17px, 4.6vw, 20px); font-weight: 600; line-height: 1.7;
     margin: 24px auto 6px; max-width: 420px; min-height: 108px;
     display: flex; align-items: center; justify-content: center;
   }
@@ -101,20 +97,19 @@
 
   /* ---------- nút ---------- */
   button {
-    font-family: 'Baloo 2', cursive;
-    font-size: 19px; font-weight: 700;
+    font-family: 'Baloo 2', cursive; font-size: 19px; font-weight: 700;
     padding: 15px 34px; border: none; border-radius: 999px;
     cursor: pointer; color: #fff;
     transition: transform .18s cubic-bezier(.2,.9,.3,1.4), box-shadow .18s ease;
     -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
   }
 
-  #next, #yes {
+  #next, #yes, #send {
     background: linear-gradient(96deg, #ff5f9e, #ff2e74);
     box-shadow: var(--shadow);
   }
-  #next:hover, #yes:hover { transform: translateY(-3px) scale(1.05); }
-  #next:active, #yes:active { transform: scale(.96); }
+  #next:hover, #yes:hover, #send:hover { transform: translateY(-3px) scale(1.05); }
+  #next:active, #yes:active, #send:active { transform: scale(.96); }
   #yes { transform-origin: center; }
 
   /* ================= MÀN LỰA CHỌN ================= */
@@ -123,13 +118,11 @@
     margin: 20px 0 4px; padding: 12px 22px; border-radius: 999px;
     background: linear-gradient(96deg, var(--pink-3), var(--purple));
     color: #fff; font-family: 'Baloo 2', cursive;
-    font-size: clamp(18px, 5vw, 23px); font-weight: 700;
-    box-shadow: var(--shadow);
+    font-size: clamp(18px, 5vw, 23px); font-weight: 700; box-shadow: var(--shadow);
   }
 
   .actions {
-    margin-top: 26px;
-    display: flex; justify-content: center; align-items: center;
+    margin-top: 26px; display: flex; justify-content: center; align-items: center;
     gap: 16px; flex-wrap: wrap; min-height: 62px;
   }
 
@@ -173,7 +166,6 @@
     70% { transform: translateX(-4px) rotate(-2deg); }
   }
 
-  /* nước mắt rơi đè lên ảnh mèo */
   .tear {
     position: absolute; width: 9px; height: 13px;
     background: linear-gradient(180deg, #9fd8ff, #4aa8ee);
@@ -190,8 +182,8 @@
   }
 
   .cat-say {
-    margin-top: 14px; display: inline-block;
-    position: relative; padding: 12px 22px; border-radius: 18px;
+    margin-top: 14px; display: inline-block; position: relative;
+    padding: 12px 22px; border-radius: 18px;
     background: #fff; border: 2px solid var(--pink-2);
     font-family: 'Baloo 2', cursive; font-size: 19px; font-weight: 700;
     color: var(--pink-4); box-shadow: 0 8px 20px rgba(190,60,130,.12);
@@ -202,9 +194,7 @@
     border-bottom: 9px solid var(--pink-2);
   }
   .cat-say.pulse { animation: say-pop .4s cubic-bezier(.2,.9,.3,1.6); }
-  @keyframes say-pop {
-    0% { transform: scale(.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); }
-  }
+  @keyframes say-pop { 0% { transform: scale(.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
 
   /* ================= MÀN ĐỒNG Ý ================= */
   .girl-wrap { width: 168px; margin: 0 auto 4px; }
@@ -228,13 +218,41 @@
   .detail-row .v { font-size: 16px; line-height: 1.5; }
   .detail-row .v b { font-family: 'Baloo 2', cursive; font-size: 18px; color: var(--pink-4); }
 
+  /* ---------- ô lời nhắn ---------- */
+  .msg-box { margin-top: 24px; text-align: left; }
+  .msg-box label {
+    display: block; font-weight: 700; font-size: 16px;
+    color: var(--pink-4); margin-bottom: 10px; text-align: center;
+  }
+  .msg-box textarea {
+    width: 100%; min-height: 96px; resize: vertical;
+    font-family: 'Quicksand', sans-serif; font-size: 16px; font-weight: 600;
+    color: var(--ink); padding: 14px 16px; border-radius: 16px;
+    border: 2px solid var(--pink-2); background: #fff; outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .msg-box textarea:focus {
+    border-color: var(--pink-4); box-shadow: 0 0 0 4px rgba(255, 79, 139, .12);
+  }
+  .msg-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+  .msg-count { font-size: 13px; font-weight: 600; opacity: .5; }
+  #send { font-size: 17px; padding: 13px 28px; }
+  #send:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  .sent-note {
+    margin-top: 12px; text-align: center; font-weight: 700; font-size: 15px;
+    color: #17a673; opacity: 0; transform: translateY(6px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .sent-note.show { opacity: 1; transform: none; }
+  .sent-note.err { color: #d9425f; }
+
   .again {
-    margin-top: 24px; background: transparent; color: var(--pink-4);
+    margin-top: 22px; background: transparent; color: var(--pink-4);
     box-shadow: none; font-size: 15px; padding: 10px 18px; opacity: .75;
     border: 2px solid var(--pink-2);
   }
 
-  /* chuyển màn */
   .screen { display: none; }
   .screen.on { display: block; }
 
@@ -244,7 +262,7 @@
   #music {
     position: fixed; top: 16px; right: 16px; z-index: 95;
     width: 46px; height: 46px; padding: 0; border-radius: 50%;
-    display: grid; place-items: center; font-size: 20px;
+    display: grid; place-items: center;
     background: rgba(255, 255, 255, .85);
     border: 2px solid var(--pink-2);
     box-shadow: 0 6px 18px rgba(190, 60, 130, .16);
@@ -253,10 +271,7 @@
   #music:hover { transform: scale(1.08); }
   #music.off { opacity: .55; filter: grayscale(1); }
   #music .bars { display: flex; gap: 2.5px; align-items: flex-end; height: 16px; }
-  #music .bars i {
-    width: 3px; border-radius: 2px; background: var(--pink-4);
-    animation: eq .9s ease-in-out infinite;
-  }
+  #music .bars i { width: 3px; border-radius: 2px; background: var(--pink-4); animation: eq .9s ease-in-out infinite; }
   #music .bars i:nth-child(1) { height: 7px;  animation-delay: 0s; }
   #music .bars i:nth-child(2) { height: 15px; animation-delay: .18s; }
   #music .bars i:nth-child(3) { height: 10px; animation-delay: .36s; }
@@ -269,6 +284,9 @@
     button { font-size: 17px; padding: 14px 26px; }
     .cat-wrap { width: 138px; }
     .girl-wrap { width: 150px; }
+    .msg-foot { flex-direction: column; align-items: stretch; }
+    #send { width: 100%; }
+    .msg-count { text-align: right; }
   }
 </style>
 </head>
@@ -293,9 +311,9 @@
 
   <!-- ===== MÀN 2: LỰA CHỌN ===== -->
   <section id="ask" class="screen">
-    <span class="art" style="font-size:54px;display:block">🎮</span>
+    <span class="art" id="askArt" style="font-size:54px">🎮</span>
     <h1 id="headline">Tối nay chơi game với anh nha?</h1>
-    <p class="sub">Anh giữ sẵn chỗ trong phòng rồi, chỉ còn thiếu mỗi em thôi 🥺</p>
+    <p class="sub" id="askSub">Anh giữ sẵn chỗ trong phòng rồi, chỉ còn thiếu mỗi em thôi 🥺</p>
 
     <div class="time-chip">⏰ <span id="timeText">22h30 tối nay</span></div>
 
@@ -308,7 +326,7 @@
 
     <div id="catBox">
       <div class="cat-wrap" id="catWrap">
-        <img src="assets/cat.jpg" alt="mèo năn nỉ">
+        <img src="/assets/cat.jpg" alt="mèo năn nỉ">
         <span class="tear l"></span>
         <span class="tear r"></span>
       </div>
@@ -318,14 +336,24 @@
 
   <!-- ===== MÀN 3: ĐỒNG Ý ===== -->
   <section id="success" class="screen">
-    <div class="girl-wrap"><img src="assets/girl.gif" alt="vui quá"></div>
-    <h1>Yeahhh! Chốt kèo nha 💗</h1>
-    <p class="sub">Biết ngay là em sẽ đồng ý mà, nút kia có chạy đằng trời 😌</p>
+    <div class="girl-wrap"><img src="/assets/girl.gif" alt="vui quá"></div>
+    <h1 id="okTitle">Yeahhh! Chốt kèo nha 💗</h1>
+    <p class="sub" id="okSub">Biết ngay là em sẽ đồng ý mà, nút kia có chạy đằng trời 😌</p>
 
     <div class="detail-box">
       <div class="detail-row"><span class="k">⏰</span><span class="v">Giờ hẹn: <b id="okTime">22h30 tối nay</b></span></div>
       <div class="detail-row"><span class="k">📍</span><span class="v">Địa điểm: <b id="okPlace">Discord — trò chuyện bang Thanh Long</b></span></div>
       <div class="detail-row"><span class="k">💌</span><span class="v">Ghi chú: <b id="okNote">Chơi tới 12h thôi cho em còn ngủ</b></span></div>
+    </div>
+
+    <div class="msg-box">
+      <label for="msgInput" id="msgLabel">Nhắn cho anh vài chữ nha 💌</label>
+      <textarea id="msgInput" maxlength="500" placeholder="Viết gì đó cho anh…"></textarea>
+      <div class="msg-foot">
+        <span class="msg-count"><span id="msgCount">0</span>/500</span>
+        <button id="send">Gửi 💌</button>
+      </div>
+      <p class="sent-note" id="sentNote"></p>
     </div>
 
     <button class="again" id="again">Quay lại 🔁</button>
@@ -337,43 +365,75 @@
 (() => {
   'use strict';
 
-  /* =========================================================
-     CẤU HÌNH — sửa ở đây, hoặc truyền qua URL:
-     ?time=22h30 tối nay&name=Bé iu&place=...&note=...
-     ========================================================= */
-  const q = new URLSearchParams(location.search);
-  const CONFIG = {
-    time:  q.get('time')  || '22h30 tối nay',
-    name:  q.get('name')  || '',
-    place: q.get('place') || 'Discord — trò chuyện bang Thanh Long',
-    note:  q.get('note')  || 'Chơi tới 12h thôi cho em còn ngủ'
+  /* Bản dự phòng — dùng khi không gọi được /api/config (ví dụ mở file offline). */
+  const DEFAULTS = {
+    story: [
+      { art: '💌', text: 'Khoan đã… đừng bấm vội. Đọc cái này trước đã nha 🙈' },
+      { art: '⚔️', text: 'Đã lâu rồi chưa thấy em on ARAM, toàn mải mê Naraka thôi.' },
+      { art: '🎧', text: 'Anh có chuẩn bị một thứ nho nhỏ. Không tốn tiền đâu… chỉ tốn thời gian của em thôi 👉👈' },
+      { art: '🥺', text: 'Bấm tiếp là biết liền. Mà báo trước, đọc rồi thì không quay đầu được đâu đó.' }
+    ],
+    nextLabel: 'Tiếp tục đọc →',
+    lastLabel: 'Rồi, nói đi 👀',
+    askArt: '🎮',
+    headline: 'Tối nay chơi game với anh nha?',
+    askSub: 'Anh giữ sẵn chỗ trong phòng rồi, chỉ còn thiếu mỗi em thôi 🥺',
+    time: '22h30 tối nay',
+    yesLabel: 'Đồng ý 💖',
+    noLabel: 'Không đồng ý',
+    firstTaunt: 'Ơ kìa, bấm trượt rồi 😜',
+    catLines: ['Đừng mà 🥺', 'Hứa sẽ không feed 🥺', 'Hứa sẽ ko bật em 🥺', 'Hứa sẽ ngoan 🥺'],
+    okTitle: 'Yeahhh! Chốt kèo nha 💗',
+    okSub: 'Biết ngay là em sẽ đồng ý mà, nút kia có chạy đằng trời 😌',
+    place: 'Discord — trò chuyện bang Thanh Long',
+    note: 'Chơi tới 12h thôi cho em còn ngủ',
+    msgLabel: 'Nhắn cho anh vài chữ nha 💌',
+    msgPlaceholder: 'Viết gì đó cho anh…',
+    sendLabel: 'Gửi 💌',
+    sentText: 'Nhận được rồi nha, cảm ơn em 💗',
+    musicOn: true
   };
 
-  /* ---------- LỜI DẪN: thêm / bớt / sửa thoải mái ---------- */
-  const STORY = [
-    { art: '💌', text: 'Khoan đã… đừng bấm vội. Đọc cái này trước đã nha 🙈' },
-    { art: '⚔️', text: 'Đã lâu rồi chưa thấy em on ARAM, toàn mải mê Naraka thôi.' },
-    { art: '🎧', text: 'Anh có chuẩn bị một thứ nho nhỏ. Không tốn tiền đâu… chỉ tốn thời gian của em thôi 👉👈' },
-    { art: '🥺', text: 'Bấm tiếp là biết liền. Mà báo trước, đọc rồi thì không quay đầu được đâu đó.' }
-  ];
-
-  /* ---------- LỜI NĂN NỈ CỦA MÈO (từ lần bấm "Không" thứ 2) ---------- */
-  const CAT_LINES = [
-    'Đừng mà 🥺',
-    'Hứa sẽ không feed 🥺',
-    'Hứa sẽ ko bật em 🥺',
-    'Hứa sẽ ngoan 🥺'
-  ];
-
+  const q = new URLSearchParams(location.search);
   const $ = (id) => document.getElementById(id);
   const rand = (min, max) => min + Math.random() * (max - min);
 
-  /* ---------- đổ cấu hình vào giao diện ---------- */
-  $('timeText').textContent = CONFIG.time;
-  $('okTime').textContent   = CONFIG.time;
-  $('okPlace').textContent  = CONFIG.place;
-  $('okNote').textContent   = CONFIG.note;
-  if (CONFIG.name) $('headline').textContent = CONFIG.name + ' ơi, tối nay chơi game với anh nha?';
+  let CFG = { ...DEFAULTS };
+  let step = 0, dodges = 0, subId = null, tauntTimer = null;
+
+  const card   = document.querySelector('.card');
+  const noBtn  = $('no'), yesBtn = $('yes'), taunt = $('taunt');
+  const catBox = $('catBox'), catWrap = $('catWrap'), catSay = $('catSay');
+
+  /* =========================================================
+     ÁP CẤU HÌNH LÊN GIAO DIỆN
+     ========================================================= */
+  function applyConfig() {
+    // cho phép ghi đè nhanh bằng tham số trên link
+    ['time', 'place', 'note'].forEach(k => { if (q.get(k)) CFG[k] = q.get(k); });
+
+    $('askArt').textContent   = CFG.askArt;
+    $('headline').textContent = q.get('name')
+      ? q.get('name') + ' ơi, ' + CFG.headline.charAt(0).toLowerCase() + CFG.headline.slice(1)
+      : CFG.headline;
+    $('askSub').textContent   = CFG.askSub;
+    $('timeText').textContent = CFG.time;
+    $('yes').textContent      = CFG.yesLabel;
+    $('no').textContent       = CFG.noLabel;
+
+    $('okTitle').textContent  = CFG.okTitle;
+    $('okSub').textContent    = CFG.okSub;
+    $('okTime').textContent   = CFG.time;
+    $('okPlace').textContent  = CFG.place;
+    $('okNote').textContent   = CFG.note;
+
+    $('msgLabel').textContent = CFG.msgLabel;
+    $('msgInput').placeholder = CFG.msgPlaceholder;
+    $('send').textContent     = CFG.sendLabel;
+
+    buildDots();
+    renderStep();
+  }
 
   /* ---------- trái tim bay nền ---------- */
   (function hearts() {
@@ -390,8 +450,7 @@
     }
   })();
 
-  /* ---------- tải trước ảnh để hiện ra là có ngay ---------- */
-  ['assets/cat.jpg', 'assets/girl.gif'].forEach(src => { new Image().src = src; });
+  ['/assets/cat.jpg', '/assets/girl.gif'].forEach(src => { new Image().src = src; });
 
   const show = (id) => {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
@@ -401,49 +460,36 @@
   /* =========================================================
      MÀN 1 — LỜI DẪN
      ========================================================= */
-  let step = 0;
-
-  (function buildDots() {
+  function buildDots() {
     const d = $('dots');
-    STORY.forEach(() => d.appendChild(document.createElement('i')));
-  })();
+    d.innerHTML = '';
+    CFG.story.forEach(() => d.appendChild(document.createElement('i')));
+  }
 
   function renderStep() {
-    const s = STORY[step];
+    const s = CFG.story[step] || { art: '💌', text: '' };
     const art = $('introArt'), txt = $('storyText');
 
     art.textContent = s.art;
     txt.textContent = s.text;
-    txt.classList.remove('fade-step');
-    void txt.offsetWidth;          // ép chạy lại animation
-    txt.classList.add('fade-step');
+    txt.classList.remove('fade-step'); void txt.offsetWidth; txt.classList.add('fade-step');
 
     [...$('dots').children].forEach((d, i) => d.classList.toggle('on', i === step));
-    $('next').textContent = (step === STORY.length - 1) ? 'Rồi, nói đi 👀' : 'Tiếp tục đọc →';
+    $('next').textContent = (step === CFG.story.length - 1) ? CFG.lastLabel : CFG.nextLabel;
   }
-  renderStep();
 
   $('next').addEventListener('click', () => {
     MUSIC.start();                       // cú bấm đầu tiên mở nhạc nền
-    if (step < STORY.length - 1) { step++; renderStep(); }
+    if (step < CFG.story.length - 1) { step++; renderStep(); }
     else show('ask');
   });
 
   /* =========================================================
-     MÀN 2 — NÚT "KHÔNG ĐỒNG Ý" CHẠY LOẠN (không bao giờ biến mất)
+     MÀN 2 — NÚT "KHÔNG ĐỒNG Ý" NHẢY LOẠN TRONG KHUNG THẺ
      ========================================================= */
-  const card = document.querySelector('.card');
-  const noBtn = $('no'), yesBtn = $('yes'), taunt = $('taunt');
-  const catBox = $('catBox'), catWrap = $('catWrap'), catSay = $('catSay');
-
-  const FIRST_TAUNT = 'Ơ kìa, bấm trượt rồi 😜';
-  let dodges = 0;
-  let tauntTimer = null;
-
   function dodge() {
     dodges++;
 
-    // Lần đầu: tách nút khỏi luồng bố cục để nhảy tự do (vẫn hiển thị nguyên vẹn).
     if (!noBtn.classList.contains('loose')) {
       const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
       const x = noBtn.offsetLeft, y = noBtn.offsetTop;   // toạ độ so với khung thẻ
@@ -461,24 +507,22 @@
     yesBtn.style.transform = 'scale(' + Math.min(1 + dodges * 0.13, 1.85) + ')';
 
     if (dodges === 1) {
-      taunt.textContent = FIRST_TAUNT;
+      taunt.textContent = CFG.firstTaunt;
       taunt.classList.add('show');
       clearTimeout(tauntTimer);
       tauntTimer = setTimeout(() => taunt.classList.remove('show'), 2600);
     } else {
-      // Từ lần thứ 2: mèo hiện ra năn nỉ, mỗi lần bấm là đổi câu.
       taunt.classList.remove('show');
       catBox.classList.add('on');
 
-      const line = CAT_LINES[Math.min(dodges - 2, CAT_LINES.length - 1)];
-      catSay.textContent = line;
+      const lines = (CFG.catLines && CFG.catLines.length) ? CFG.catLines : DEFAULTS.catLines;
+      catSay.textContent = lines[Math.min(dodges - 2, lines.length - 1)];
 
       catSay.classList.remove('pulse'); void catSay.offsetWidth; catSay.classList.add('pulse');
       catWrap.classList.remove('shake'); void catWrap.offsetWidth; catWrap.classList.add('shake');
     }
   }
 
-  /* Chọn vị trí mới: luôn nằm TRỌN TRONG KHUNG THẺ, không đè nút "Đồng ý", không che mèo. */
   function pickSpot() {
     const pad = 10;
     const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
@@ -496,7 +540,6 @@
       const x = rand(pad, maxX), y = rand(pad, maxY);
       const hits = blocked.some(b => x < b.r && x + w > b.l && y < b.b && y + h > b.t);
       if (!hits) return { x, y };
-      // dự phòng: nếu thẻ quá chật, giữ ô nào xa nút "Đồng ý" nhất
       const d = Math.hypot(x - ycx, y - ycy);
       if (d > bestScore) { bestScore = d; best = { x, y }; }
     }
@@ -515,76 +558,109 @@
   function jumpTo(p) {
     noBtn.style.left = p.x + 'px';
     noBtn.style.top  = p.y + 'px';
-    // chỉ nghiêng nhẹ cho vui — KHÔNG thu nhỏ, không mờ đi
     noBtn.style.transform = 'rotate(' + rand(-9, 9).toFixed(1) + 'deg)';
   }
 
-  // Máy tính: né ngay khi rê chuột tới.
   noBtn.addEventListener('mouseenter', dodge);
-  // Điện thoại + máy tính: né TRƯỚC khi cú click kịp phát sinh.
   noBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); dodge(); });
   noBtn.addEventListener('touchstart',  (e) => { e.preventDefault(); dodge(); }, { passive: false });
-  // Chốt chặn cuối: click có lọt qua thì vẫn không tính là "không đồng ý".
-  noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
+  noBtn.addEventListener('click',       (e) => { e.preventDefault(); dodge(); });
 
-  // Đổi kích thước cửa sổ -> kéo nút về lại trong khung thẻ.
-  window.addEventListener('resize', clampInsideCard);
-  function clampInsideCard() {
+  window.addEventListener('resize', () => {
     if (!noBtn.classList.contains('loose')) return;
     const pad = 10;
     const maxX = Math.max(pad, card.clientWidth  - noBtn.offsetWidth  - pad);
     const maxY = Math.max(pad, card.clientHeight - noBtn.offsetHeight - pad);
     noBtn.style.left = Math.min(Math.max(parseFloat(noBtn.style.left) || pad, pad), maxX) + 'px';
     noBtn.style.top  = Math.min(Math.max(parseFloat(noBtn.style.top)  || pad, pad), maxY) + 'px';
-  }
+  });
 
   /* =========================================================
-     NÚT "ĐỒNG Ý"
+     ĐỒNG Ý + GỬI LỜI NHẮN
      ========================================================= */
   yesBtn.addEventListener('click', () => {
     noBtn.classList.remove('loose');
     show('success');
-    burst();
-    setTimeout(burst, 450);
-    setTimeout(burst, 900);
+    burst(); setTimeout(burst, 450); setTimeout(burst, 900);
+
+    // ghi nhận lượt đồng ý (kèm số lần đã bấm "Không")
+    fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ dodges })
+    }).then(r => r.json()).then(d => { if (d && d.id) subId = d.id; }).catch(() => {});
+  });
+
+  const msgInput = $('msgInput'), sendBtn = $('send'), sentNote = $('sentNote');
+
+  msgInput.addEventListener('input', () => { $('msgCount').textContent = msgInput.value.length; });
+
+  sendBtn.addEventListener('click', () => {
+    const note = msgInput.value.trim();
+    if (!note) {
+      sentNote.textContent = 'Viết gì đó rồi hẵng gửi nha 🥹';
+      sentNote.classList.add('show', 'err');
+      return;
+    }
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Đang gửi…';
+
+    fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id: subId, note, dodges })
+    })
+      .then(r => r.json())
+      .then(d => {
+        if (!d || d.error) throw new Error(d && d.error);
+        if (d.id) subId = d.id;
+        sentNote.textContent = CFG.sentText;
+        sentNote.classList.remove('err');
+        sentNote.classList.add('show');
+        sendBtn.textContent = 'Đã gửi ✓';
+        msgInput.disabled = true;
+        burst();
+      })
+      .catch(() => {
+        sentNote.textContent = 'Gửi hụt rồi, thử lại giúp anh nha 🥲';
+        sentNote.classList.add('show', 'err');
+        sendBtn.disabled = false;
+        sendBtn.textContent = CFG.sendLabel;
+      });
   });
 
   $('again').addEventListener('click', () => {
-    dodges = 0; step = 0;
+    dodges = 0; step = 0; subId = null;
     yesBtn.style.transform = '';
     noBtn.className = ''; noBtn.style.cssText = '';
     taunt.classList.remove('show');
     catBox.classList.remove('on');
-    renderStep();
+    msgInput.value = ''; msgInput.disabled = false;
+    $('msgCount').textContent = '0';
+    sendBtn.disabled = false;
+    sentNote.classList.remove('show', 'err');
+    applyConfig();
     show('intro');
   });
 
   /* =========================================================
      NHẠC NỀN
-     Nếu có file assets/bgm.mp3 thì phát file đó.
-     Không có thì tự chơi một vòng lofi nhẹ bằng Web Audio.
-     (Trình duyệt cấm tự phát nhạc, nên chỉ bật sau cú bấm đầu tiên.)
+     Phát /api/music (bài admin chọn, mặc định là assets/bgm.mp3).
+     Nếu không phát được thì tự chơi một vòng lofi nhẹ.
+     Trình duyệt cấm tự phát nhạc nên chỉ bật sau cú bấm đầu tiên.
      ========================================================= */
   const MUSIC = (() => {
     const btn = $('music');
     let started = false, on = false, mode = null;
-    let el = null;                                   // <audio> khi dùng file
-    let ctx = null, master = null, out = null, timer = null, stepIdx = 0, nextTime = 0;
+    let el = null;
+    let ctx = null, master = null, out = null, stepIdx = 0, nextTime = 0;
 
     const VOL = 0.30;
     const paint = () => btn.classList.toggle('off', !on);
 
-    /* ---- vòng hợp âm: Cmaj7 – Gmaj7 – Am7 – Fmaj7 ---- */
-    const PROG = [
-      [60, 64, 67, 71],
-      [55, 59, 62, 66],
-      [57, 60, 64, 67],
-      [53, 57, 60, 64]
-    ];
-    const ARP = [0, 2, 3, null, 1, 2, null, 3];      // null = nghỉ
-    const BPM = 68;
-    const BEAT = 60 / BPM, EIGHTH = BEAT / 2;
-
+    const PROG = [[60, 64, 67, 71], [55, 59, 62, 66], [57, 60, 64, 67], [53, 57, 60, 64]];
+    const ARP = [0, 2, 3, null, 1, 2, null, 3];
+    const BEAT = 60 / 68, EIGHTH = BEAT / 2;
     const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
 
     function tone(freq, t, dur, gain, type, attack) {
@@ -599,7 +675,7 @@
 
     function scheduleStep(i, t) {
       const chord = PROG[Math.floor(i / 8) % PROG.length];
-      if (i % 8 === 0) {                              // đầu ô nhịp: đệm + bass
+      if (i % 8 === 0) {
         chord.forEach(n => tone(hz(n - 12), t, BEAT * 4.2, 0.055, 'triangle', 0.7));
         tone(hz(chord[0] - 24), t, BEAT * 2.2, 0.10, 'sine', 0.05);
       }
@@ -610,8 +686,7 @@
     function startSynth() {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return;
-      ctx = new AC();
-      mode = 'synth';
+      ctx = new AC(); mode = 'synth';
 
       master = ctx.createGain(); master.gain.value = 0.0001;
       const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2400;
@@ -626,19 +701,16 @@
 
       master.gain.exponentialRampToValueAtTime(VOL, ctx.currentTime + 1.6);
       nextTime = ctx.currentTime + 0.12;
-      timer = setInterval(() => {
-        while (nextTime < ctx.currentTime + 0.35) {
-          scheduleStep(stepIdx++, nextTime);
-          nextTime += EIGHTH;
-        }
+      setInterval(() => {
+        while (nextTime < ctx.currentTime + 0.35) { scheduleStep(stepIdx++, nextTime); nextTime += EIGHTH; }
       }, 50);
     }
 
     function start() {
-      if (started) return;
+      if (started || CFG.musicOn === false) return;
       started = true; on = true; paint();
 
-      el = new Audio('assets/bgm.mp3');
+      el = new Audio('/api/music');
       el.loop = true; el.volume = 0.42;
       el.play().then(() => { mode = 'file'; })
                .catch(() => { el = null; startSynth(); });
@@ -646,7 +718,7 @@
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (!started) { start(); return; }
+      if (!started) { CFG.musicOn = true; start(); return; }
       on = !on; paint();
       if (mode === 'file' && el) { on ? el.play().catch(() => {}) : el.pause(); }
       else if (ctx) {
@@ -661,16 +733,14 @@
   /* =========================================================
      PHÁO GIẤY
      ========================================================= */
-  const cv = $('confetti'), ctx = cv.getContext('2d');
+  const cv = $('confetti'), ctx2 = cv.getContext('2d');
   let parts = [], raf = null;
 
   function sizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
-    cv.width = window.innerWidth * dpr;
-    cv.height = window.innerHeight * dpr;
-    cv.style.width = window.innerWidth + 'px';
-    cv.style.height = window.innerHeight + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cv.width = window.innerWidth * dpr; cv.height = window.innerHeight * dpr;
+    cv.style.width = window.innerWidth + 'px'; cv.style.height = window.innerHeight + 'px';
+    ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   sizeCanvas();
   window.addEventListener('resize', sizeCanvas);
@@ -682,35 +752,40 @@
     for (let i = 0; i < 90; i++) {
       const a = rand(0, Math.PI * 2), sp = rand(4, 14);
       parts.push({
-        x: cx, y: cy,
-        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 4,
+        x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 4,
         w: rand(6, 12), h: rand(8, 16),
         rot: rand(0, Math.PI * 2), vr: rand(-.25, .25),
-        color: COLORS[(Math.random() * COLORS.length) | 0],
-        life: rand(90, 150)
+        color: COLORS[(Math.random() * COLORS.length) | 0], life: rand(90, 150)
       });
     }
     if (!raf) raf = requestAnimationFrame(tick);
   }
 
   function tick() {
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx2.clearRect(0, 0, window.innerWidth, window.innerHeight);
     parts = parts.filter(p => p.life > 0 && p.y < window.innerHeight + 60);
     for (const p of parts) {
       p.vy += 0.28; p.vx *= 0.99;
       p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--;
-
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.globalAlpha = Math.max(0, Math.min(1, p.life / 45));
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-      ctx.restore();
+      ctx2.save();
+      ctx2.translate(p.x, p.y); ctx2.rotate(p.rot);
+      ctx2.globalAlpha = Math.max(0, Math.min(1, p.life / 45));
+      ctx2.fillStyle = p.color;
+      ctx2.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx2.restore();
     }
     if (parts.length) raf = requestAnimationFrame(tick);
-    else { ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); raf = null; }
+    else { ctx2.clearRect(0, 0, window.innerWidth, window.innerHeight); raf = null; }
   }
+
+  /* =========================================================
+     KHỞI ĐỘNG — vẽ bằng bản mặc định, rồi thay bằng cấu hình mới nhất
+     ========================================================= */
+  applyConfig();
+  fetch('/api/config')
+    .then(r => r.ok ? r.json() : null)
+    .then(cfg => { if (cfg && !cfg.error) { CFG = { ...DEFAULTS, ...cfg }; applyConfig(); } })
+    .catch(() => {});
 })();
 </script>
 </body>

@@ -1,0 +1,8 @@
+name = "date-invite"
+compatibility_date = "2026-08-03"
+pages_build_output_dir = "public"
+
+# Nơi lưu cấu hình trang, nhạc do admin tải lên và lời nhắn người ta gửi về.
+[[kv_namespaces]]
+binding = "STORE"
+id = "cf8eb76fe67b4556832e4410ce42d4b9"

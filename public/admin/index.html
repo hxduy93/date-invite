@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quản trị — Trang mời hẹn</title>
+<link rel="icon" href="/assets/cat.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #ff4f8b;
+    --pink-soft: #ffd9e8;
+    --purple: #8b5cf6;
+    --ink: #3d1c36;
+    --muted: #8a7385;
+    --line: #f0dce8;
+    --bg: #fbf6f9;
+  }
+
+  body {
+    font-family: 'Quicksand', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--bg); color: var(--ink);
+    min-height: 100dvh; padding: 22px 16px 60px;
+    line-height: 1.5;
+  }
+
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  h1 { font-size: 24px; font-weight: 700; }
+  h2 {
+    font-size: 16px; font-weight: 700; color: var(--pink);
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  h2 .num {
+    width: 24px; height: 24px; border-radius: 50%; flex: none;
+    background: var(--pink); color: #fff; font-size: 13px;
+    display: grid; place-items: center;
+  }
+
+  .panel {
+    background: #fff; border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px; margin-bottom: 18px;
+    box-shadow: 0 2px 10px rgba(140, 60, 110, .05);
+  }
+
+  label { display: block; font-size: 13px; font-weight: 700; color: var(--muted); margin: 14px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+
+  input[type=text], input[type=password], textarea, select {
+    width: 100%; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--ink);
+    padding: 11px 13px; border: 1.5px solid var(--line); border-radius: 10px;
+    background: #fff; outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus {
+    border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255, 79, 139, .1);
+  }
+  textarea { resize: vertical; min-height: 68px; line-height: 1.6; }
+
+  button {
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    padding: 11px 22px; border: none; border-radius: 10px;
+    background: var(--pink); color: #fff; cursor: pointer;
+    transition: filter .15s, transform .1s;
+  }
+  button:hover { filter: brightness(1.07); }
+  button:active { transform: scale(.98); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.ghost { background: #fff; color: var(--pink); border: 1.5px solid var(--pink-soft); }
+  button.danger { background: #fff; color: #d9425f; border: 1.5px solid #ffd6de; padding: 7px 13px; font-size: 13px; }
+  button.small { padding: 8px 14px; font-size: 13px; }
+
+  /* ---------- đăng nhập ---------- */
+  #login { max-width: 380px; margin: 12vh auto 0; text-align: center; }
+  #login .lock { font-size: 46px; }
+  #login h1 { margin: 10px 0 6px; }
+  #login p { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  #login button { width: 100%; margin-top: 12px; }
+
+  /* ---------- đầu trang ---------- */
+  .top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .top .sub { color: var(--muted); font-size: 14px; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .tabs button {
+    background: #fff; color: var(--muted); border: 1.5px solid var(--line);
+    padding: 9px 18px; font-size: 14px;
+  }
+  .tabs button.on { background: var(--pink); color: #fff; border-color: var(--pink); }
+
+  .page { display: none; }
+  .page.on { display: block; }
+
+  /* ---------- các bước lời dẫn ---------- */
+  .step-row {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 12px; border: 1.5px solid var(--line); border-radius: 12px; margin-bottom: 10px;
+    background: #fffdfe;
+  }
+  .step-row .emo { width: 70px; flex: none; text-align: center; font-size: 20px; }
+  .step-row textarea { min-height: 58px; }
+  .step-row .rm { flex: none; }
+
+  .line-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+  .line-row input { flex: 1; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  @media (max-width: 620px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .bar {
+    position: sticky; bottom: 0; margin-top: 20px;
+    background: rgba(251, 246, 249, .95); backdrop-filter: blur(8px);
+    padding: 14px 0; border-top: 1px solid var(--line);
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  .status { font-size: 14px; font-weight: 700; }
+  .status.ok { color: #17a673; }
+  .status.err { color: #d9425f; }
+
+  /* ---------- nhạc ---------- */
+  .music-now {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 13px 15px; border-radius: 12px; background: #fff6fa;
+    border: 1.5px solid var(--pink-soft); margin-bottom: 16px; font-size: 14px; font-weight: 600;
+  }
+  audio { width: 100%; margin-top: 12px; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+  .switch { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; margin-top: 16px; }
+  .switch input { width: 18px; height: 18px; accent-color: var(--pink); }
+
+  /* ---------- kết quả ---------- */
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .stat {
+    flex: 1; min-width: 130px; background: #fff; border: 1px solid var(--line);
+    border-radius: 14px; padding: 16px 18px;
+  }
+  .stat .n { font-size: 27px; font-weight: 700; color: var(--pink); line-height: 1.2; }
+  .stat .l { font-size: 13px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+  .sub-item {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 18px; margin-bottom: 12px;
+  }
+  .sub-head {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 10px;
+  }
+  .pill {
+    padding: 3px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
+  }
+  .pill.yes { background: #e3f9f0; color: #12855c; }
+  .pill.dodge { background: #fff0f5; color: var(--pink); }
+  .sub-note {
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    background: #fffafc; border-left: 3px solid var(--pink-soft);
+    padding: 11px 14px; border-radius: 0 10px 10px 0; white-space: pre-wrap; word-break: break-word;
+  }
+  .sub-note.empty { color: var(--muted); font-style: italic; font-weight: 500; }
+  .sub-item .rm { margin-top: 10px; }
+
+  .empty-box { text-align: center; color: var(--muted); padding: 40px 20px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ============ ĐĂNG NHẬP ============ -->
+<div id="login">
+  <div class="lock">🔐</div>
+  <h1>Khu quản trị</h1>
+  <p>Nhập mật khẩu để vào</p>
+  <input type="password" id="pass" placeholder="Mật khẩu" autocomplete="current-password">
+  <button id="loginBtn">Vào 🚪</button>
+  <p class="status err" id="loginErr" style="margin-top:12px"></p>
+</div>
+
+<!-- ============ BẢNG ĐIỀU KHIỂN ============ -->
+<div class="wrap" id="app" style="display:none">
+
+  <div class="top">
+    <div>
+      <h1>Bảng điều khiển 💗</h1>
+      <div class="sub">Sửa nội dung, đổi nhạc và xem lời nhắn nhận được</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="ghost small" onclick="window.open('/','_blank')">Xem trang ↗</button>
+      <button class="ghost small" id="logout">Thoát</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button data-tab="content" class="on">📝 Nội dung</button>
+    <button data-tab="music">🎵 Nhạc nền</button>
+    <button data-tab="results">💌 Kết quả <span id="tabCount"></span></button>
+  </div>
+
+  <!-- ---------- NỘI DUNG ---------- -->
+  <div class="page on" id="page-content">
+
+    <div class="panel">
+      <h2><span class="num">1</span> Lời dẫn (bấm "Tiếp tục đọc" từng màn)</h2>
+      <div id="steps"></div>
+      <button class="ghost small" id="addStep">+ Thêm một màn</button>
+      <div class="grid2" style="margin-top:16px">
+        <div><label>Chữ trên nút chuyển màn</label><input type="text" id="nextLabel"></div>
+        <div><label>Chữ trên nút ở màn cuối</label><input type="text" id="lastLabel"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">2</span> Màn hỏi</h2>
+      <div class="grid2">
+        <div><label>Icon lớn</label><input type="text" id="askArt"></div>
+        <div><label>Giờ hẹn</label><input type="text" id="time"></div>
+      </div>
+      <label>Câu hỏi chính</label><input type="text" id="headline">
+      <label>Câu phụ bên dưới</label><textarea id="askSub"></textarea>
+      <div class="grid2">
+        <div><label>Chữ trên nút đồng ý</label><input type="text" id="yesLabel"></div>
+        <div><label>Chữ trên nút không đồng ý</label><input type="text" id="noLabel"></div>
+      </div>
+      <label>Câu chọc khi bấm "Không" lần đầu</label><input type="text" id="firstTaunt">
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">3</span> Lời mèo năn nỉ (từ lần bấm "Không" thứ 2 trở đi)</h2>
+      <div id="catLines"></div>
+      <button class="ghost small" id="addLine">+ Thêm một câu</button>
+      <p class="hint">Bấm "Không" lần 2 hiện câu 1, lần 3 hiện câu 2… hết câu thì giữ nguyên câu cuối.</p>
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">4</span> Màn đồng ý</h2>
+      <label>Tiêu đề</label><input type="text" id="okTitle">
+      <label>Câu phụ</label><textarea id="okSub"></textarea>
+      <div class="grid2">
+        <div><label>Địa điểm</label><input type="text" id="place"></div>
+        <div><label>Ghi chú</label><input type="text" id="note"></div>
+      </div>
+      <p class="hint">Giờ hẹn lấy chung với ô "Giờ hẹn" ở mục 2.</p>
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">5</span> Ô lời nhắn</h2>
+      <label>Chữ mời nhắn</label><input type="text" id="msgLabel">
+      <label>Chữ mờ trong ô nhập</label><input type="text" id="msgPlaceholder">
+      <div class="grid2">
+        <div><label>Chữ trên nút gửi</label><input type="text" id="sendLabel"></div>
+        <div><label>Lời cảm ơn sau khi gửi</label><input type="text" id="sentText"></div>
+      </div>
+    </div>
+
+    <div class="bar">
+      <button id="save">💾 Lưu tất cả</button>
+      <button class="ghost" id="reload">Tải lại</button>
+      <span class="status" id="saveStatus"></span>
+    </div>
+  </div>
+
+  <!-- ---------- NHẠC ---------- -->
+  <div class="page" id="page-music">
+    <div class="panel">
+      <h2><span class="num">🎵</span> Nhạc nền</h2>
+
+      <div class="music-now" id="musicNow">Đang tải…</div>
+
+      <label>Đổi bài khác (mp3 / m4a / wav — tối đa 24MB)</label>
+      <input type="file" id="musicFile" accept="audio/*">
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button id="upBtn">⬆ Tải lên</button>
+        <button class="ghost" id="resetMusic">Quay về bài mặc định</button>
+      </div>
+      <p class="hint">Bài mặc định là file <b>assets/bgm.mp3</b> đi kèm trang. Tải bài mới lên sẽ đè lên nó mà không cần deploy lại.</p>
+
+      <label style="margin-top:20px">Nghe thử bài đang dùng</label>
+      <audio id="preview" controls src="/api/music"></audio>
+
+      <div class="switch">
+        <input type="checkbox" id="musicOn">
+        <label for="musicOn" style="margin:0">Tự bật nhạc khi người ta bấm nút đầu tiên</label>
+      </div>
+
+      <div class="bar">
+        <button id="saveMusicOn">💾 Lưu lựa chọn này</button>
+        <span class="status" id="musicStatus"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- KẾT QUẢ ---------- -->
+  <div class="page" id="page-results">
+    <div class="stats" id="stats"></div>
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <button class="ghost small" id="refresh">🔄 Tải lại kết quả</button>
+    </div>
+    <div id="subs"></div>
+  </div>
+
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+  const KEY = 'date-invite-pass';
+  let PASS = sessionStorage.getItem(KEY) || '';
+  let CFG = null;
+
+  const TEXT_FIELDS = [
+    'nextLabel', 'lastLabel', 'askArt', 'headline', 'askSub', 'time',
+    'yesLabel', 'noLabel', 'firstTaunt', 'okTitle', 'okSub', 'place', 'note',
+    'msgLabel', 'msgPlaceholder', 'sendLabel', 'sentText'
+  ];
+
+  const api = (path, opts = {}) => fetch('/api' + path, {
+    ...opts,
+    headers: { 'x-admin-pass': PASS, ...(opts.headers || {}) }
+  }).then(async (r) => {
+    const ct = r.headers.get('content-type') || '';
+    const data = ct.includes('json') ? await r.json() : null;
+    if (!r.ok) throw new Error((data && data.error) || ('Lỗi ' + r.status));
+    return data;
+  });
+
+  /* ================= ĐĂNG NHẬP ================= */
+  function doLogin(pass) {
+    return fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ pass })
+    }).then(r => r.json().then(d => ({ ok: r.ok, d })));
+  }
+
+  $('loginBtn').addEventListener('click', tryLogin);
+  $('pass').addEventListener('keydown', (e) => { if (e.key === 'Enter') tryLogin(); });
+
+  function tryLogin() {
+    const p = $('pass').value;
+    if (!p) return;
+    $('loginErr').textContent = '';
+    $('loginBtn').disabled = true;
+    doLogin(p).then(({ ok, d }) => {
+      $('loginBtn').disabled = false;
+      if (!ok) { $('loginErr').textContent = (d && d.error) || 'Sai mật khẩu'; return; }
+      PASS = p; sessionStorage.setItem(KEY, p);
+      openApp();
+    }).catch(() => {
+      $('loginBtn').disabled = false;
+      $('loginErr').textContent = 'Không kết nối được';
+    });
+  }
+
+  $('logout').addEventListener('click', () => {
+    sessionStorage.removeItem(KEY); PASS = '';
+    location.reload();
+  });
+
+  function openApp() {
+    $('login').style.display = 'none';
+    $('app').style.display = '';
+    loadAll();
+  }
+
+  /* ================= TAB ================= */
+  document.querySelectorAll('.tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+      $('page-' + b.dataset.tab).classList.add('on');
+    });
+  });
+
+  /* ================= TẢI DỮ LIỆU ================= */
+  function loadAll() {
+    api('/admin/data')
+      .then(d => {
+        CFG = d.config;
+        fillForm(d.config);
+        renderMusic(d.music);
+        renderSubs(d.subs || []);
+      })
+      .catch(err => {
+        if (String(err.message).includes('Chưa đăng nhập')) {
+          sessionStorage.removeItem(KEY); location.reload(); return;
+        }
+        alert('Không tải được dữ liệu: ' + err.message);
+      });
+  }
+
+  /* ================= NỘI DUNG ================= */
+  function fillForm(c) {
+    TEXT_FIELDS.forEach(k => { if ($(k)) $(k).value = c[k] != null ? c[k] : ''; });
+    $('musicOn').checked = c.musicOn !== false;
+    renderSteps(c.story || []);
+    renderLines(c.catLines || []);
+  }
+
+  function renderSteps(story) {
+    const box = $('steps');
+    box.innerHTML = '';
+    story.forEach((s, i) => {
+      const row = document.createElement('div');
+      row.className = 'step-row';
+      row.innerHTML =
+        '<input type="text" class="emo" value="" maxlength="8" title="Icon">' +
+        '<textarea placeholder="Nội dung màn ' + (i + 1) + '"></textarea>' +
+        '<button class="danger rm" title="Xoá màn này">✕</button>';
+      row.querySelector('.emo').value = s.art || '';
+      row.querySelector('textarea').value = s.text || '';
+      row.querySelector('.rm').addEventListener('click', () => { row.remove(); });
+      box.appendChild(row);
+    });
+  }
+
+  $('addStep').addEventListener('click', () => {
+    const cur = collectSteps();
+    cur.push({ art: '💗', text: '' });
+    renderSteps(cur);
+  });
+
+  function collectSteps() {
+    return [...$('steps').children].map(r => ({
+      art: r.querySelector('.emo').value.trim() || '💗',
+      text: r.querySelector('textarea').value.trim()
+    })).filter(s => s.text);
+  }
+
+  function renderLines(lines) {
+    const box = $('catLines');
+    box.innerHTML = '';
+    lines.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'line-row';
+      row.innerHTML =
+        '<span style="width:56px;font-size:13px;color:var(--muted);font-weight:700">Lần ' + (i + 2) + '</span>' +
+        '<input type="text">' +
+        '<button class="danger rm">✕</button>';
+      row.querySelector('input').value = t;
+      row.querySelector('.rm').addEventListener('click', () => { renderLines(collectLines().filter((_, j) => j !== i)); });
+      box.appendChild(row);
+    });
+  }
+
+  $('addLine').addEventListener('click', () => {
+    const cur = collectLines(); cur.push(''); renderLines(cur);
+  });
+
+  function collectLines() {
+    return [...$('catLines').children].map(r => r.querySelector('input').value.trim()).filter(Boolean);
+  }
+
+  $('save').addEventListener('click', () => {
+    const body = {};
+    TEXT_FIELDS.forEach(k => { if ($(k)) body[k] = $(k).value.trim(); });
+    body.story = collectSteps();
+    body.catLines = collectLines();
+    body.musicOn = $('musicOn').checked;
+
+    if (!body.story.length) { setStatus('saveStatus', 'Phải có ít nhất một màn lời dẫn', false); return; }
+
+    setStatus('saveStatus', 'Đang lưu…', true);
+    $('save').disabled = true;
+    api('/admin/config', {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(d => {
+      CFG = d.config;
+      setStatus('saveStatus', '✓ Đã lưu, mở lại trang là thấy ngay', true);
+      $('save').disabled = false;
+    }).catch(e => {
+      setStatus('saveStatus', 'Lỗi: ' + e.message, false);
+      $('save').disabled = false;
+    });
+  });
+
+  $('reload').addEventListener('click', loadAll);
+
+  function setStatus(id, msg, good) {
+    const el = $(id);
+    el.textContent = msg;
+    el.className = 'status ' + (good ? 'ok' : 'err');
+    if (good && msg.startsWith('✓')) setTimeout(() => { el.textContent = ''; }, 4000);
+  }
+
+  /* ================= NHẠC ================= */
+  function renderMusic(meta) {
+    const kb = meta ? Math.round(meta.size / 1024) : 0;
+    $('musicNow').innerHTML = meta
+      ? '🎵 Đang dùng bài tải lên: <b>' + escapeHtml(meta.name) + '</b> — ' + kb + ' KB'
+      : '🎵 Đang dùng bài mặc định đi kèm trang (<b>assets/bgm.mp3</b>)';
+  }
+
+  $('upBtn').addEventListener('click', () => {
+    const f = $('musicFile').files[0];
+    if (!f) { setStatus('musicStatus', 'Chọn file đã nha', false); return; }
+    if (f.size > 24 * 1024 * 1024) { setStatus('musicStatus', 'File quá 24MB', false); return; }
+
+    setStatus('musicStatus', 'Đang tải lên…', true);
+    $('upBtn').disabled = true;
+    f.arrayBuffer().then(buf => api('/admin/music', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/octet-stream',
+        'x-file-type': f.type || 'audio/mpeg',
+        'x-file-name': encodeURIComponent(f.name)
+      },
+      body: buf
+    })).then(d => {
+      renderMusic(d.music);
+      $('preview').src = '/api/music?t=' + Date.now();
+      setStatus('musicStatus', '✓ Đổi nhạc xong', true);
+      $('upBtn').disabled = false;
+    }).catch(e => {
+      setStatus('musicStatus', 'Lỗi: ' + e.message, false);
+      $('upBtn').disabled = false;
+    });
+  });
+
+  $('resetMusic').addEventListener('click', () => {
+    if (!confirm('Xoá bài đã tải lên và quay về bài mặc định?')) return;
+    api('/admin/music', { method: 'DELETE' }).then(() => {
+      renderMusic(null);
+      $('preview').src = '/api/music?t=' + Date.now();
+      setStatus('musicStatus', '✓ Đã quay về bài mặc định', true);
+    }).catch(e => setStatus('musicStatus', 'Lỗi: ' + e.message, false));
+  });
+
+  $('saveMusicOn').addEventListener('click', () => {
+    api('/admin/config', {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ...CFG, musicOn: $('musicOn').checked })
+    }).then(d => { CFG = d.config; setStatus('musicStatus', '✓ Đã lưu', true); })
+      .catch(e => setStatus('musicStatus', 'Lỗi: ' + e.message, false));
+  });
+
+  /* ================= KẾT QUẢ ================= */
+  function renderSubs(subs) {
+    $('tabCount').textContent = subs.length ? '(' + subs.length + ')' : '';
+
+    const withNote = subs.filter(s => s.note && s.note.trim());
+    const maxDodge = subs.reduce((m, s) => Math.max(m, s.dodges || 0), 0);
+
+    $('stats').innerHTML =
+      stat(subs.length, 'Lượt đồng ý') +
+      stat(withNote.length, 'Có lời nhắn') +
+      stat(maxDodge, 'Bấm "Không" nhiều nhất');
+
+    const box = $('subs');
+    if (!subs.length) {
+      box.innerHTML = '<div class="empty-box">Chưa có ai bấm đồng ý 🥺</div>';
+      return;
+    }
+
+    box.innerHTML = '';
+    subs.forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'sub-item';
+      const when = fmtTime(s.at);
+      const note = (s.note || '').trim();
+      el.innerHTML =
+        '<div class="sub-head">' +
+          '<span class="pill yes">✓ Đồng ý</span>' +
+          '<span class="pill dodge">Bấm "Không" ' + (s.dodges || 0) + ' lần</span>' +
+          '<span>🕒 ' + when + '</span>' +
+          (s.country ? '<span>🌏 ' + escapeHtml(s.country) + '</span>' : '') +
+        '</div>' +
+        (note
+          ? '<div class="sub-note">' + escapeHtml(note) + '</div>'
+          : '<div class="sub-note empty">(không để lại lời nhắn)</div>') +
+        '<button class="danger rm">🗑 Xoá</button>';
+      el.querySelector('.rm').addEventListener('click', () => {
+        if (!confirm('Xoá lượt này?')) return;
+        api('/admin/sub', {
+          method: 'DELETE',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ id: s.id })
+        }).then(loadAll).catch(e => alert('Lỗi: ' + e.message));
+      });
+      box.appendChild(el);
+    });
+  }
+
+  const stat = (n, l) => '<div class="stat"><div class="n">' + n + '</div><div class="l">' + l + '</div></div>';
+
+  $('refresh').addEventListener('click', loadAll);
+
+  function fmtTime(iso) {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return iso || ''; }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  /* ================= VÀO THẲNG NẾU ĐÃ ĐĂNG NHẬP ================= */
+  if (PASS) {
+    doLogin(PASS).then(({ ok }) => {
+      if (ok) openApp();
+      else { sessionStorage.removeItem(KEY); PASS = ''; }
+    }).catch(() => {});
+  }
+})();
+</script>
+</body>
+</html>
